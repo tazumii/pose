@@ -1,20 +1,17 @@
 import { Text, StyleSheet, View } from "react-native";
 import { globalStyles } from "../theme/global";
 
-export default function TopContainer(props) {
+export default function BodyContainer(props) {
   return (
     <View style={[styles.container]}>
-      {props.children}
+        {props.children}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    height: "7%",
-    backgroundColor: "#141414",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flex: "1",
+    justifyContent: "center",
   },
 });
