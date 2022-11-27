@@ -1,12 +1,15 @@
 import { StyleSheet, View, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useDispatch } from "react-redux";
 
 export default function RoundIconButton(props) {
+  const dispatch = useDispatch();
+
   return (
     <>
       <Pressable
         style={[styles.button]}
-        onPress={() => alert("You pressed a button.")}
+        onPress={() => dispatch(props.dispatch)}
       >
         <Ionicons
           name={props.icon}

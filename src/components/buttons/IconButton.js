@@ -1,13 +1,17 @@
 import { StyleSheet, View, Pressable } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useDispatch } from "react-redux";
 
 export default function IconButton(props) {
+  const dispatch = useDispatch();
+
   return (
     <>
       <Pressable
         style={[styles.button]}
+        onPress={() => dispatch(props.dispatch)}
         disabled={props.disabled}
-        onPress={() => alert("You pressed a button.")}
+        
       >
         <Ionicons
           name={props.icon}
