@@ -9,7 +9,7 @@ export default function RoundIconButton(props) {
     <>
       <Pressable
         style={[styles.button]}
-        onPress={() => dispatch(props.dispatch)}
+        onPress={props.onPress}
       >
         <Ionicons
           name={props.icon}

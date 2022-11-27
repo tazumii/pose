@@ -3,13 +3,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useDispatch } from "react-redux";
 
 export default function IconButton(props) {
-  const dispatch = useDispatch();
-
   return (
     <>
       <Pressable
         style={[styles.button]}
-        onPress={() => dispatch(props.dispatch)}
+        onPress={props.onPress}
         disabled={props.disabled}
         
       >
