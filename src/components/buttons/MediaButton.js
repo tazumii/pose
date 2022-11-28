@@ -29,12 +29,9 @@ export default function MediaButton(props) {
       <ImageBackground
           source={{ uri: previewimage }}
           resizeMode='cover'
-          style={{
-            height: 40,
-            width: 40,
-            overflow: "hidden",
-          }}
-        ><View style={[styles.circle]} /></ImageBackground>
+          style={{height: 40, width: 40}}
+          imageStyle={[styles.circle]}
+        />
     </Pressable>
   );
 }
