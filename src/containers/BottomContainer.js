@@ -12,10 +12,9 @@ export default function BottomContainer(props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: "14%",
-    backgroundColor: "#141414",
+    height: 80,
+    backgroundColor: "black",
     alignItems: "center",
-    justifyContent: "space-around",
-    zIndex: 1,
+    justifyContent: "space-between",
   },
 });

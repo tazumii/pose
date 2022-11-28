@@ -1,4 +1,4 @@
-import { Camera, FlashMode } from "expo-camera";
+import { AutoFocus, Camera, FlashMode } from "expo-camera";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CaptureButton from "../components/buttons/CaptureButton";
@@ -9,14 +9,17 @@ import BottomContainer from "../containers/BottomContainer";
 import TopContainer from "../containers/TopContainer";
 import { globalStyles } from "../theme/global";
 import * as ImagePicker from "expo-image-picker";
-import * as MediaLibray from "expo-media-library";
 import { useDispatch, useSelector } from "react-redux";
-import { switchType, toggleFlash } from "../reducers/cameraSlice";
-import { setHeight, setImage, setWidth } from "../reducers/imagePickerSlice";
+import {
+  switchType,
+  toggleAutoFocus,
+  toggleFlash,
+} from "../reducers/cameraSlice";
+import { setImage, showLayer } from "../reducers/imagePickerSlice";
 import Layer from "../components/Layer";
 import OpacitySlider from "../components/OpacitySIlder";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
+import MediaButton from "../components/buttons/MediaButton";
 
 export default function Picture({ navigation }) {
   const dispatch = useDispatch();
@@ -25,69 +28,65 @@ export default function Picture({ navigation }) {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });
-    dispatch(setHeight(result.assets[0].height));
-    dispatch(setWidth(result.assets[0].width));
     dispatch(setImage(result.assets[0].uri));
   };
 
-  const getLastImage = async () => {
-    const albumName = "Recents";
-    const getPhotos = await MediaLibray.getAlbumAsync(albumName);
-    let getFirstPhotos = await MediaLibray.getAssetsAsync({
-      first: 1,
-      album: getPhotos,
-      sortBy: ["creationTime"],
-      mediaType: ["photo"],
-    });
-  };
-
-  const { cameraType } = useSelector((state) => state.camera);
-  const { flash } = useSelector((state) => state.camera);
-  const { image, width, height, opacity } = useSelector(
-    (state) => state.imagePicker
-  );
+  const { cameraType, flash, autofocus } = useSelector((state) => state.camera);
+  const { image, opacity, show } = useSelector((state) => state.imagePicker);
 
   return (
     <SafeAreaView style={[globalStyles.container]}>
-       
       <TopContainer>
         <IconButton
           icon={flash === FlashMode.off ? "flash-off" : "flash"}
           onPress={() => dispatch(toggleFlash())}
-          size="24"
+          size="20"
+          color="white"
+        />
+        <RoundIconButton
+          icon="chevron-down"
+          iconsize={24}
+          size={32}
+          onPress={() => dispatch(showLayer())}
+        />
+        <IconButton
+          icon="scan"
+          size={24}
+          onPress={() => dispatch(toggleAutoFocus())}
+          color={autofocus === AutoFocus.on ? "yellow" : "white"}
         />
       </TopContainer>
 
       <BodyContainer>
-        
-        <Camera style={styles.camera} type={cameraType} flashMode={flash}>
-        <GestureHandlerRootView>
-          {image !== undefined ? (
+        <Camera
+          style={styles.camera}
+          type={cameraType}
+          flashMode={flash}
+          autoFocus={autofocus}
+        >
+          {image !== undefined && show ? (
             <>
-              <Layer style={styles.layer}
-                uri={image}
-                width={width}
-                height={height}
-                opacity={opacity}
-              />
-              <IconButton
-                icon="trash-bin"
-                size="24"
-                onPress={() => dispatch(setImage(undefined))}
-                style={styles.deleteBtn}
-              />
+              <GestureHandlerRootView style={styles.layer}>
+                {image !== undefined ? (
+                  <Layer style={styles.layer} uri={image} opacity={opacity} />
+                ) : null}
+              </GestureHandlerRootView>
+
               <OpacitySlider />
             </>
           ) : null}
-          </GestureHandlerRootView>
         </Camera>
-        
       </BodyContainer>
 
       <BottomContainer>
-        <IconButton icon="layers" size="28" onPress={pickImageAsync} />
+        <MediaButton onPress={pickImageAsync} />
         <CaptureButton />
-        <RoundIconButton icon="sync" onPress={() => dispatch(switchType())} />
+        <RoundIconButton
+          icon="sync"
+          iconsize={32}
+          size={40}
+          onPress={() => dispatch(switchType())}
+        />
       </BottomContainer>
     </SafeAreaView>
   );
@@ -98,5 +97,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  layer: {
+    position: "absolute",
   },
 });

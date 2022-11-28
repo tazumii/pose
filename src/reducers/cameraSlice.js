@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CameraType, FlashMode } from "expo-camera";
+import { AutoFocus, CameraType, FlashMode } from "expo-camera";
 
 const cameraSlice = createSlice({
   name: "camera",
   initialState: {
     cameraType: CameraType.back,
-    flash: FlashMode.off, 
+    flash: FlashMode.off,
+    autofocus: AutoFocus.on,
   },
   reducers: {
     switchType: (state) => {
@@ -18,9 +19,14 @@ const cameraSlice = createSlice({
         ? (state.flash = FlashMode.on)
         : (state.flash = FlashMode.off);
     },
+    toggleAutoFocus: (state) => {
+      state.autofocus === AutoFocus.on
+        ? (state.autofocus = AutoFocus.off)
+        : (state.autofocus = AutoFocus.on);
+    },
   },
 });
 
-export const { switchType, toggleFlash } = cameraSlice.actions;
+export const { switchType, toggleFlash, toggleAutoFocus } = cameraSlice.actions;
 
 export default cameraSlice.reducer;

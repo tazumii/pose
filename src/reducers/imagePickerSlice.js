@@ -4,26 +4,27 @@ const imagePickerSlice = createSlice({
   name: "imagePicker",
   initialState: {
     image: undefined,
-    height: undefined,
-    width: undefined,
-    opacity: 1,
+    previewimage: undefined,
+    opacity: 100,
+    show: false,
   },
   reducers: {
+    setPreviewImage: (state, action) => {
+      state.previewimage = action.payload;
+    },
     setImage: (state, action) => {
       state.image = action.payload;
-    },
-    setHeight: (state, action) => {
-      state.height = action.payload;
-    },
-    setWidth: (state, action) => {
-      state.width = action.payload;
     },
     setOpacity: (state, action) => {
       state.opacity = action.payload;
     },
+    showLayer: (state) => {
+      state.show ? (state.show = false) : (state.show = true);
+    },
   },
 });
 
-export const { setImage, setHeight, setWidth, setOpacity } = imagePickerSlice.actions;
+export const { setPreviewImage, setImage, setOpacity, showLayer } =
+  imagePickerSlice.actions;
 
 export default imagePickerSlice.reducer;

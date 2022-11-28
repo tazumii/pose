@@ -12,8 +12,8 @@ export default function TopContainer(props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: "7%",
-    backgroundColor: "#141414",
+    height: 48,
+    backgroundColor: "black",
     alignItems: "center",
     justifyContent: "space-between",
     zIndex: 1,

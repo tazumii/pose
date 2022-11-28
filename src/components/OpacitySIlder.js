@@ -8,12 +8,14 @@ export default function OpacitySlider(props) {
   return (
     <View>
       <Slider
-        style={{ width: 200, height: 40 }}
+        style={ {width: 250, height: 40, }}
         minimumValue={0.1}
         maximumValue={1}
         value={1}
-        minimumTrackTintColor="white"
-        maximumTrackTintColor="gray"
+        tapToSeek={true}
+        minimumTrackTintColor="rgba(230,230,230,0.7)"
+        maximumTrackTintColor="rgba(230,230,230,0.5)"
+        thumbTintColor="rgba(230,230,230,1)"
         onValueChange={value => {
           dispatch(setOpacity(value));
         }}
