@@ -12,6 +12,7 @@ export default function BodyContainer(props) {
 const styles = StyleSheet.create({
   container: {
     flex: "1",
+    borderRadius: 40,
     justifyContent: "center",
   },
 });

@@ -11,15 +11,17 @@ import { globalStyles } from "../theme/global";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  showSettings,
   switchType,
   toggleAutoFocus,
   toggleFlash,
 } from "../reducers/cameraSlice";
-import { setImage, showLayer } from "../reducers/imagePickerSlice";
+import { setImage, setOpacity, showLayer } from "../reducers/imagePickerSlice";
 import Layer from "../components/Layer";
 import OpacitySlider from "../components/OpacitySIlder";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MediaButton from "../components/buttons/MediaButton";
+import ModelContainer from "../containers/ModalContainer";
 
 export default function Picture({ navigation }) {
   const dispatch = useDispatch();
@@ -29,9 +31,12 @@ export default function Picture({ navigation }) {
       quality: 1,
     });
     dispatch(setImage(result.assets[0].uri));
+    dispatch(showSettings());
   };
 
-  const { cameraType, flash, autofocus } = useSelector((state) => state.camera);
+  const { cameraType, flash, autofocus, settings } = useSelector(
+    (state) => state.camera
+  );
   const { image, opacity, show } = useSelector((state) => state.imagePicker);
 
   return (
@@ -44,10 +49,11 @@ export default function Picture({ navigation }) {
           color="white"
         />
         <RoundIconButton
-          icon="chevron-down"
+          icon={settings ? "chevron-down" : "chevron-up"}
           iconsize={24}
           size={32}
-          onPress={() => dispatch(showLayer())}
+          disabled={image !== undefined ? false : true}
+          onPress={() => dispatch(showSettings())}
         />
         <IconButton
           icon="scan"
@@ -57,6 +63,28 @@ export default function Picture({ navigation }) {
         />
       </TopContainer>
 
+      {settings ? (
+        <ModelContainer>
+          <OpacitySlider />
+          <IconButton
+            icon={show ? "eye" : "eye-off"}
+            size={28}
+            onPress={() => dispatch(showLayer())}
+            color="white"
+          />
+          <IconButton
+            icon="close"
+            size={32}
+            onPress={() => {
+              dispatch(setImage(undefined));
+              dispatch(showSettings())
+              dispatch(setOpacity(100));;
+            }}
+            color="white"
+          />
+        </ModelContainer>
+      ) : null}
+
       <BodyContainer>
         <Camera
           style={styles.camera}
@@ -65,21 +93,21 @@ export default function Picture({ navigation }) {
           autoFocus={autofocus}
         >
           {image !== undefined && show ? (
-            <>
-              <GestureHandlerRootView style={styles.layer}>
-                {image !== undefined ? (
-                  <Layer style={styles.layer} uri={image} opacity={opacity} />
-                ) : null}
-              </GestureHandlerRootView>
-
-              <OpacitySlider />
-            </>
+            <GestureHandlerRootView style={styles.layer}>
+              {image !== undefined ? (
+                <Layer style={styles.layer} uri={image} opacity={opacity} />
+              ) : null}
+            </GestureHandlerRootView>
           ) : null}
         </Camera>
       </BodyContainer>
 
       <BottomContainer>
-        <MediaButton onPress={pickImageAsync} />
+        <MediaButton
+          onPress={() => {
+            pickImageAsync();
+          }}
+        />
         <CaptureButton />
         <RoundIconButton
           icon="sync"

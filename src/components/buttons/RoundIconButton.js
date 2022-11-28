@@ -5,12 +5,13 @@ export default function RoundIconButton(props) {
     <Pressable
       style={[styles.button, { width: props.size, height: props.size }]}
       onPress={props.onPress}
+      disabled={props.disabled}
     >
       <Ionicons
         style={{ textAlign: "center" }}
         name={props.icon}
         size={props.iconsize}
-        color="white"
+        color={props.disabled ? "gray" : "white"}
       />
     </Pressable>
   );

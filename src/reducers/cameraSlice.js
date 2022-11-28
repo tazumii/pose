@@ -7,6 +7,7 @@ const cameraSlice = createSlice({
     cameraType: CameraType.back,
     flash: FlashMode.off,
     autofocus: AutoFocus.on,
+    settings: false,
   },
   reducers: {
     switchType: (state) => {
@@ -24,9 +25,12 @@ const cameraSlice = createSlice({
         ? (state.autofocus = AutoFocus.off)
         : (state.autofocus = AutoFocus.on);
     },
+    showSettings: (state) => {
+      state.settings ? (state.settings = false) : (state.settings = true);
+    },
   },
 });
 
-export const { switchType, toggleFlash, toggleAutoFocus } = cameraSlice.actions;
+export const { switchType, toggleFlash, toggleAutoFocus, showSettings } = cameraSlice.actions;
 
 export default cameraSlice.reducer;

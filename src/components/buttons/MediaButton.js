@@ -3,6 +3,7 @@ import { StyleSheet, Image, View, Pressable, ImageBackground } from "react-nativ
 import * as MediaLibray from "expo-media-library";
 import { useDispatch, useSelector } from "react-redux";
 import { setPreviewImage } from "../../reducers/imagePickerSlice";
+import { showSettings } from "../../reducers/cameraSlice";
 
 export default function MediaButton(props) {
   const dispatch = useDispatch();
@@ -17,7 +18,9 @@ export default function MediaButton(props) {
       sortBy: ["creationTime"],
       mediaType: ["photo"],
     });
+    
     dispatch(setPreviewImage(getFirstPhotos.assets[0].uri));
+    
   };
 
   useEffect(() => {
