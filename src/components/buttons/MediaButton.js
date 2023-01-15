@@ -24,7 +24,6 @@ export default function MediaButton(props) {
   };
 
   useEffect(() => {
-    
     getLastImage();
   }, []);
   return (

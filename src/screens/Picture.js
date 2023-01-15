@@ -31,7 +31,7 @@ export default function Picture({ navigation }) {
       quality: 1,
     });
     dispatch(setImage(result.assets[0].uri));
-    dispatch(showSettings());
+    dispatch(showSettings(true));
   };
 
   const { cameraType, flash, autofocus, settings } = useSelector(
@@ -53,7 +53,7 @@ export default function Picture({ navigation }) {
           iconsize={24}
           size={32}
           disabled={image !== undefined ? false : true}
-          onPress={() => dispatch(showSettings())}
+          onPress={() => dispatch(settings ? showSettings(false) : showSettings(true))}
         />
         <IconButton
           icon="scan"
@@ -69,7 +69,9 @@ export default function Picture({ navigation }) {
           <IconButton
             icon={show ? "eye" : "eye-off"}
             size={28}
-            onPress={() => dispatch(showLayer())}
+            onPress={() => {
+              dispatch(showLayer());
+            }}
             color="white"
           />
           <IconButton
@@ -77,8 +79,8 @@ export default function Picture({ navigation }) {
             size={32}
             onPress={() => {
               dispatch(setImage(undefined));
-              dispatch(showSettings())
-              dispatch(setOpacity(100));;
+              dispatch(showSettings(false));
+              dispatch(setOpacity(100));
             }}
             color="white"
           />
@@ -92,7 +94,7 @@ export default function Picture({ navigation }) {
           flashMode={flash}
           autoFocus={autofocus}
         >
-          {image !== undefined && show ? (
+          {image !== undefined ? (
             <GestureHandlerRootView style={styles.layer}>
               {image !== undefined ? (
                 <Layer style={styles.layer} uri={image} opacity={opacity} />

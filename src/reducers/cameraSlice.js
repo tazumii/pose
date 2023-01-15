@@ -25,8 +25,8 @@ const cameraSlice = createSlice({
         ? (state.autofocus = AutoFocus.off)
         : (state.autofocus = AutoFocus.on);
     },
-    showSettings: (state) => {
-      state.settings ? (state.settings = false) : (state.settings = true);
+    showSettings: (state, action) => {
+      state.settings = action.payload;
     },
   },
 });
